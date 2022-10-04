@@ -21,16 +21,18 @@ public class Client {
     
     
     public static void main(String[] args) throws SocketException, UnknownHostException, IOException {
-        
+        System.out.println("-----------------------CLIENT-----------------------");
         DatagramSocket client = new DatagramSocket();
         // nhap du lieu
         Scanner sc = new Scanner(System.in);
         String bangMa="";
         int _key=0;
         boolean _number = false;
-        while(bangMa==""|| bangMa==null){
+        while(bangMa==""|| bangMa==null || bangMa.contains("�")){
             System.out.println("Moi ban nhap bang ma:");
             bangMa= sc.nextLine();
+            if(bangMa==""|| bangMa==null || bangMa.contains("�"))
+                System.out.println("Bang ma chi cho phep ky tu khong dau va khong duoc rong!!!!!!!!");
         }
         while (!_number|| _key<2) {            
             try
@@ -38,16 +40,20 @@ public class Client {
                 System.out.println("Moi ban nhap key:");
                 _key = sc.nextInt();
                 _number = true;
+                if(_key<2)
+                    System.out.println("Key phai lon hon hoac bang 2!!!!!!!!");
             }
             catch(Exception ex)
             {
+                System.out.println("Ban chi duoc nhap so!!!!!!!");
                 sc.nextLine();
+                
             }
         }
         
         // gui bang ma hoa
         byte[] data = new byte[256];
-        data = RailFenceCipher(bangMa, _key).getBytes();
+        data = RailFenceCipher(bangMa, _key).getBytes("UTF-8");
         InetAddress ip = InetAddress.getByName("localhost");
         DatagramPacket RailFenceOut = new DatagramPacket(data, data.length, ip, 9999);
         client.send(RailFenceOut);

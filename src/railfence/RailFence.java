@@ -22,6 +22,7 @@ public class RailFence {
     public static void main(String[] args) throws SocketException, IOException {
         // TODO code application logic here
         // khoi tao socket
+        System.out.println("-----------------------SERVER-----------------------");
         DatagramSocket server = new DatagramSocket(9999);
         System.out.println("Server dang hoat dong");
         // nhan mang ma hoa
@@ -38,7 +39,7 @@ public class RailFence {
         System.out.println("Bang ma da nhan: " + railFence);
         // end code
         String banro=DeRailFenceCipher(railFence,key);
-        System.out.println("Ban ro: " + banro);
+        System.out.println("Bang ro: " + banro);
         byte[] soKyTu = new byte[256];
         soKyTu=DemKyTu(banro).getBytes();
         DatagramPacket guiSoKyTu = new DatagramPacket(soKyTu, soKyTu.length,keyIn.getAddress(),keyIn.getPort());
@@ -101,9 +102,9 @@ public class RailFence {
         ArrayList<Integer> number  = new ArrayList<Integer>();
         // lay nhung ky tu co trong chuoi khong lap lai
         for(int i =0;i<str.length();i++){
-        if(!list.contains(String.valueOf(str.charAt(i))))
+        if(!list.contains(String.valueOf(str.charAt(i)).toLowerCase()))
         {
-            list.add(String.valueOf(str.charAt(i)));
+            list.add(String.valueOf(str.charAt(i)).toLowerCase());
             number.add(1);
         }
         }
@@ -111,12 +112,12 @@ public class RailFence {
         for(int i =0 ; i< list.size();i++){
             int sum=0;
             for(int j = 0 ; j<str.length();j++){
-                if(list.get(i).equals(String.valueOf(str.charAt(j))))
+                if(list.get(i).equalsIgnoreCase(String.valueOf(str.charAt(j))))
                     sum+=1;
             }
             number.set(i, sum);
         }
-               // System.out.println(number);
+        
 
          //sap xep chuoi
        for(int i=0;i<number.size()-1;i++){
@@ -133,6 +134,8 @@ public class RailFence {
             }
         }
        }
+       //System.out.println(list);
+        //System.out.println(number);
         // lay phan tu xuat hien nhieu thu 2 trong mang
         int solanXuatHien = number.get(0);
         for(int i=0;i<number.size();i++){
